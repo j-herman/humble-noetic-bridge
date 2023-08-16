@@ -25,7 +25,7 @@ Run the image, using the host computer network to make it easier for your nodes 
 
 Do not source any workspaces in this container for now, or the bridge will get confused.  
 
-TODO: This is no longer working with the changes to put everything into one container, so right now we can only bridge ROS1 and ROS2 nodes running within the container.  This is a ROS2 and Docker configuration problem that should be resolved shortly.
+TODO: We can communicate with other Docker containers running ROS2 nodes and using the host network but not yet with the host computer.  This will require further investigation.
 
 Open additional terminals to interact with the container:
 
@@ -69,5 +69,11 @@ In a noetic terminal:
 `rosrun roscpp_tutorials listener`
 
 Swap the listener/ talker and re-run to confirm bi-directional connectivity.
+
+To test communication with a ROS2 application running in a separate container (I'm using the humble branch from the dockwater repo), start that container using the host computer network:
+
+`docker run -it –net=host dockwater:humble /bin/bash`
+
+Source your ROS2 installation and try running the talker and/or listener from the new container.
 
 Once this is all working you can try to run nodes either directly on your system or in another container that is running on the host network.  This isn't working in all cases yet.
