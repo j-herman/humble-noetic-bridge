@@ -50,6 +50,9 @@ find_package(catkin REQUIRED COMPONENTS
   DIRECTORY msg
    FILES
    VRXTest.msg
+   ParameterValue.msg
+   Parameter.msg
+   ParamVec.msg
 #   Message2.msg
  )
 

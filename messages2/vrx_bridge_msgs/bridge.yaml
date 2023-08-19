@@ -1,4 +1,4 @@
+-
+  enable_foreign_mappings: true
   ros1_package_name: 'vrx_bridge_msgs'
-  ros1_message_name: 'VRXTest'
-  ros2_package_name: 'vrx_bridge_msgs'
-  ros2_message_name: 'VRXTest'
+  ros2_package_name: 'rcl_interfaces'

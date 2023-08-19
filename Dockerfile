@@ -69,7 +69,8 @@ RUN /bin/bash -c "cd bridge_ws && source /opt/ros/noetic/setup.bash  &&\
 
 RUN mkdir -p /ros1_bridge/src
 WORKDIR /ros1_bridge
-RUN git clone https://github.com/ros2/ros1_bridge
+RUN git clone https://github.com/ros2/ros1_bridge && cd ros1_bridge &&\
+               git checkout b9f1739fd84fc877a8ec6e5c416b65aa2d782f89
 RUN /bin/bash -c "source /opt/ros/noetic/setup.bash &&\
                      . /ros2_humble/install/local_setup.bash &&\
                   colcon build --packages-select ros1_bridge --cmake-force-configure"
