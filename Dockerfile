@@ -5,7 +5,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y &&\
         curl gnupg lsb-release &&\
     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
         -o /usr/share/keyrings/ros-archive-keyring.gpg &&\
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu jammy main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null &&\
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu focal main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null &&\
     DEBIAN_FRONTEND=noninteractive apt-get update -y &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
       build-essential \
@@ -50,6 +50,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y &&\
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y 
 RUN rosdep install --from-paths src --ignore-src -y --rosdistro humble \
       --skip-keys "fastcdr rti-connext-dds-6.0.1 urdfdom_headers"
+COPY messages2 src/
 RUN colcon build --symlink-install
 
 RUN rm /etc/apt/sources.list.d/ros2.list &&\
@@ -61,17 +62,23 @@ RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main"
     DEBIAN_FRONTEND=noninteractive apt-get update -y &&\
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         ros-noetic-desktop-full nano
+WORKDIR /        
+COPY messages1 /
+RUN /bin/bash -c "cd bridge_ws && source /opt/ros/noetic/setup.bash  &&\
+                    catkin_make install -DCMAKE_INSTALL_PREFIX=/opt/ros/noetic"
 
 RUN mkdir -p /ros1_bridge/src
 WORKDIR /ros1_bridge
-RUN git clone https://github.com/ros2/ros1_bridge
+RUN git clone https://github.com/ros2/ros1_bridge && cd ros1_bridge &&\
+               git checkout b9f1739fd84fc877a8ec6e5c416b65aa2d782f89
 RUN /bin/bash -c "source /opt/ros/noetic/setup.bash &&\
-                    . /ros2_humble/install/local_setup.bash &&\
+                     . /ros2_humble/install/local_setup.bash &&\
                   colcon build --packages-select ros1_bridge --cmake-force-configure"
 
 WORKDIR /
 ENV ROS1_DISTRO=noetic
 ENV ROS2_DISTRO=humble
 COPY ros_entrypoint.sh /
+RUN /bin/bash -c "chmod +x /ros_entrypoint.sh"
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
