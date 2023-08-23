@@ -111,6 +111,23 @@ rostopic list
 
 You should see that the bridge is created for the ParamVec topic and that the "map" frame message from ROS2 is echoed in the ROS1 terminal. 
 
+### To test with VRX:
+
+Copy the "basic_node.py" file into your running docker container.  
+
+In a ROS1 terminal, run the node: 
+
+`python3 basic_node.py`
+
+In another container or on your computer, run VRX:
+
+`ros2 launch vrx_gz competition.launch.py world:=stationkeeping_task.sdf`
+
+When the stationkeeping task reaches the "running" state, you should see the WAM-V move forward briefly and then stop.  You can confirm this by echoing the /wamv/thrusters/left/thrust command in a ROS2 terminal.
+
+Running the perception task should produce no thrust commands.  Running any other task should cause the WAM-V to move forward without stopping.
+
+
 
 Useful information about this example and lessons learned for customizing your own bridge: 
 * This image has a local, stripped down package that copies the necessary parts of ros-gz-interfaces to provide the ParamVec ROS2 message, so that we don't have to include all of Gazebo in the Docker image.  This may not be the right final solution but it works for the proof-of-concept.
