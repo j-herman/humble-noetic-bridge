@@ -24,7 +24,7 @@ Run the image:
 
 `docker run -it ros_bridge_image /bin/bash`
 
-Do not source any workspaces in this container for now, or the bridge will get confused.  
+Do not source any workspaces in this terminal for now, or the bridge will get confused.  
 
 
 Open additional terminals to interact with the container:
