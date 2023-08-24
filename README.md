@@ -111,7 +111,7 @@ rostopic list
 
 You should see that the bridge is created for the ParamVec topic and that the "map" frame message from ROS2 is echoed in the ROS1 terminal. 
 
-### To test with VRX:
+### To test with [VRX](https://github.com/osrf/vrx):
 
 Copy the "basic_node.py" file into your running docker container.  
 
