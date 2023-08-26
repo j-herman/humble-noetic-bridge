@@ -1,4 +1,5 @@
 # Docker container to enable noetic <-> humble communication on Ubuntu Focal
+## Proof-of-concept for Virtual RobotX competition
 
 Inspired by and loosely based on:
 
